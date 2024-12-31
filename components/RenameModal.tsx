@@ -8,7 +8,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter, // Added DialogFooter
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,10 +65,6 @@ function RenameModal() {
               }
             }}
           />
-        </DialogHeader>
-
-        {/* Dialog Footer added here */}
-        <DialogFooter>
           <div className="flex space-x-2 py-3">
             <Button
               size="sm"
@@ -91,7 +86,7 @@ function RenameModal() {
               <span>Rename</span>
             </Button>
           </div>
-        </DialogFooter>
+        </DialogHeader>
       </DialogContent>
     </Dialog>
   );
