@@ -3,13 +3,11 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { db, storage } from "@/firebase";
 import { useAppStore } from "@/store/store";
@@ -30,30 +28,26 @@ export function DeleteModal() {
     ]);
 
   async function deleteFile() {
-    if (!user || !fileId) return;
-
-    const toastId = toast.loading("Deleting...");
+    if (!user || !fileId) {
+      toast.error("User or file ID not found.");
+      return;
+    }
 
     const fileRef = ref(storage, `users/${user.id}/files/${fileId}`);
 
     try {
-      deleteObject(fileRef)
-        .then(async () => {
-          deleteDoc(doc(db, "users", user.id, "files", fileId)).then(() => {
-            toast.success("Deleted Successfully", {
-              id: toastId,
-            });
-          });
-        })
-        .finally(() => {
-          setIsDeleteModalOpen(false);
-        });
-    } catch (error) {
-      setIsDeleteModalOpen(false);
+      // Step 1: Delete file from Firebase Storage
+      await deleteObject(fileRef);
 
-      toast.error("Error deleting document", {
-        id: toastId,
-      });
+      // Step 2: Delete file reference from Firestore
+      await deleteDoc(doc(db, "users", user.id, "files", fileId));
+
+      toast.success("File deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      toast.error("Failed to delete the file. Please try again.");
+    } finally {
+      setIsDeleteModalOpen(false);
     }
   }
 
@@ -80,7 +74,7 @@ export function DeleteModal() {
             variant={"ghost"}
             onClick={() => setIsDeleteModalOpen(false)}
           >
-            <span className="se-only">Cancel</span>
+            <span className="sr-only">Cancel</span>
             <span>Cancel</span>
           </Button>
 
@@ -89,7 +83,7 @@ export function DeleteModal() {
             size="sm"
             variant={"destructive"}
             className="px-3 flex-1"
-            onClick={() => deleteFile()}
+            onClick={deleteFile}
           >
             <span className="sr-only">Delete</span>
             <span>Delete</span>

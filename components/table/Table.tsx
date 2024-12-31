@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
                   </TableCell>
                 ))}
 
-                <TableCell>
+                <TableCell key={(row.original as FileType).id}>
                   <Button
                     variant={"outline"}
                     onClick={() => {

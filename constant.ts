@@ -50,6 +50,9 @@ export const COLOR_EXTENSION_MAP: { [kay: string]: string;} = {
           sass: "#000000",
           less: "#000000",
           md: "#000000",
-          yml: "#000000",       
+          yml: "#000000",
+          jpeg: "#2b579a",
+          webp: "#000000",       
+          
 
 }

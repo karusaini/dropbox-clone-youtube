@@ -72,7 +72,7 @@ function RenameModal() {
               variant={"ghost"}
               onClick={() => setIsRenameModalOpen(false)}
             >
-              <span className="se-only">Cancel</span>
+              <span className="sr-only">Cancel</span>
               <span>Cancel</span>
             </Button>
 
